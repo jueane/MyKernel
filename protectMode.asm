@@ -5,17 +5,17 @@ org 07c00h
 
 [SECTION .gdt]
 ;GDT
-;									¶Î»ùµØ		¶Î½çÏÞ			ÊôÐÔ
+;									æ®µåŸºåœ°		æ®µç•Œé™			å±žæ€§
 LABEL_GDT:			Descriptor		0,			0,				0
 LABEL_DESC_CODE32:	Descriptor		0,			SegCode32Len-1,	DA_C+DA_32
 LABEL_DESC_VIDEO:	Descriptor		0B8000h,		0ffffh,			DA_DRW
-;DGT½áÊø
+;DGTç»“æŸ
 
-GdtLen		equ		$-LABEL_GDT		;GDT³¤¶È
-GdtPtr		dw		GdtLen-1		;GDT½çÏÞ
+GdtLen		equ		$-LABEL_GDT		;GDTé•¿åº¦
+GdtPtr		dw		GdtLen-1		;GDTç•Œé™
 			dd		0
 
-;GDTÑ¡Ôñ×Ó
+;GDTé€‰æ‹©å­
 SelectorCode32		equ		LABEL_DESC_CODE32-LABEL_GDT
 SelectorVideo		equ		LABEL_DESC_VIDEO-LABEL_GDT
 
@@ -28,7 +28,7 @@ LABEL_BEGIN:
 	mov ss,ax
 	mov sp,0100h
 
-	;³õÊ¼»¯32Î»´úÂë¶ÎÃèÊö·û
+	;åˆå§‹åŒ–32ä½ä»£ç æ®µæè¿°ç¬¦
 	xor eax,eax
 	mov ax,cs
 	shl eax,4
@@ -38,26 +38,26 @@ LABEL_BEGIN:
 	mov byte [LABEL_DESC_CODE32+4],al
 	mov byte [LABEL_DESC_CODE32+7],ah
 	
-	;Îª¼ÓÔØGDTR×÷×¼±¸
+	;ä¸ºåŠ è½½GDTRä½œå‡†å¤‡
 	xor eax,eax
 	mov ax,ds
 	shl eax,4
 	add eax,LABEL_GDT
 	mov dword [GdtPtr+2],eax
 
-	;¼ÓÔØGDTR
+	;åŠ è½½GDTR
 	lgdt [GdtPtr]
-	;¹ØÖÐ¶Ï
+	;å…³ä¸­æ–­
 	cli
-	;´ò¿ªµØÖ·ÏßA20
+	;æ‰“å¼€åœ°å€çº¿A20
 	in al,92h
 	or al,00000010b
 	out 92h,al
-	;×¼±¸ÇÐ»»µ½±£»¤Ä£Ê½
+	;å‡†å¤‡åˆ‡æ¢åˆ°ä¿æŠ¤æ¨¡å¼
 	mov eax,cr0
 	or eax,1
 	mov cr0,eax
-	;ÕæÕý½øÈë±£»¤Ä£Ê½
+	;çœŸæ­£è¿›å…¥ä¿æŠ¤æ¨¡å¼
 	jmp dword SelectorCode32:0
 ;end of bits 16
 

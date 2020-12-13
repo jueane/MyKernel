@@ -8,11 +8,11 @@ LABEL_DESC_STACK:		Descriptor	0,				TopOfStack,		DA_DRWA+DA_32
 LABEL_DESC_TEST:		Descriptor	0500000h,		0ffffh,			DA_DRW
 LABEL_DESC_VIDEO:		Descriptor	0B8000h,		0ffffh,			DA_DRW
 
-GdtLen			equ		$-LABEL_GDT			;GDT³¤¶È
+GdtLen			equ		$-LABEL_GDT			;GDTé•¿åº¦
 GdtPtr			dw		GdtLen-1
 				dd		0
 
-;GDTÑ¡Ôñ×Ó
+;GDTé€‰æ‹©å­
 SelectorNormal			equ		LABEL_DESC_NORMAL-LABEL_GDT
 SelectorCode32			equ		LABEL_DESC_CODE32-LABEL_GDT
 SelectorCode16			equ		LABEL_DESC_CODE16-LABEL_GDT
@@ -26,14 +26,14 @@ ALIGN 32
 [BITS 32]
 LABEL_DATA:
 SPValueInRealMode	dw		0
-;×Ö·û´®
+;å­—ç¬¦ä¸²
 PMMessage:			db		"In protected mode now",0
 OffsetPMMessage		equ		PMMessage-$$
 StrTest:			db		"abcdefghijk"
 OffsetStrTest		equ		StrTest-$$
 DataLen				equ		$-LABEL_DATA
 
-;È«¾Ö¶ÑÕ»¶Î
+;å…¨å±€å †æ ˆæ®µ
 [SECTION .gs]
 ALIGN 32
 [BITS 32]
@@ -41,7 +41,7 @@ LABEL_STACK:
 	times 512 db 0
 TopOfStack			equ		$-LABEL_STACK
 
-;32Î»
+;32ä½
 LABEL_SEG_CODE32:
 	mov ax,SelectorData
 	mov ds,ax
@@ -55,7 +55,7 @@ LABEL_SEG_CODE32:
 
 	mov esp,TopOfStack
 
-	;ÏÂÃæÏÔÊ¾Ò»¸ö×Ö·û´®
+	;ä¸‹é¢æ˜¾ç¤ºä¸€ä¸ªå­—ç¬¦ä¸²
 	mov ah,0ch
 	xor esi,esi
 	xor edi,edi
@@ -76,7 +76,7 @@ LABEL_SEG_CODE32:
 	call TestWrite
 	call TestRead
 
-	;ÖÁ´ËÍ£Ö¹
+	;è‡³æ­¤åœæ­¢
 	jmp SelectorCode16:0
 
 ;--------------------------------------
@@ -92,7 +92,7 @@ TestRead:
 	call DispReturn
 
 	ret
-;TestRead ½áÊø--------------------------
+;TestRead ç»“æŸ--------------------------
 
 ;---------------------------------------
 TestWrite:
@@ -114,7 +114,7 @@ TestWrite:
 	pop esi
 
 	ret
-;testWrite ½áÊø--------------------------
+;testWrite ç»“æŸ--------------------------
 
 DispAL:
 	push ecx
@@ -145,7 +145,7 @@ DispAL:
 	pop ecx
 	
 	ret
-;DispAL ½áÊø -----------------------------
+;DispAL ç»“æŸ -----------------------------
 
 ;------------------------------------
 DispReturn
@@ -163,28 +163,4 @@ DispReturn
 	pop eax
 
 	ret
-;DispReturn ½áÊø ---------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+;DispReturn ç»“æŸ ---------------------------
