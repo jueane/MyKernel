@@ -1,3 +1,5 @@
+%include "pm.inc"
+
 [SECTION .gdt]
 LABEL_GDT:				Descriptor	0,				0,				0
 LABEL_DESC_NORMAL:		Descriptor	0,				0ffffh,			DA_DRW
@@ -79,6 +81,8 @@ LABEL_SEG_CODE32:
 	;至此停止
 	jmp SelectorCode16:0
 
+SegCode32Len	equ $-LABEL_SEG_CODE32
+
 ;--------------------------------------
 TestRead:
 	xor esi,esi
@@ -148,7 +152,7 @@ DispAL:
 ;DispAL 结束 -----------------------------
 
 ;------------------------------------
-DispReturn
+DispReturn:
 	push eax
 	push ebx
 	mov eax,edi
@@ -164,3 +168,6 @@ DispReturn
 
 	ret
 ;DispReturn 结束 ---------------------------
+
+times	361		db 0
+dw 0xaa55

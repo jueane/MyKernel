@@ -68,7 +68,7 @@ LABEL_SEG_CODE32:
 	mov gs,ax
 	mov edi,(80*11+79)*2
 	mov ah,0ch
-	mov al,'j'
+	mov al,'X'
 	mov [gs:edi],ax
 
 	jmp $
